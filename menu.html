@@ -282,7 +282,8 @@
     aspect-ratio: 16/9;
     background: var(--bg); overflow: hidden; flex-shrink: 0;
   }
-  .modal-media video { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .modal-media video,
+  .modal-media .modal-image { width: 100%; height: 100%; object-fit: cover; display: block; }
 
   .media-placeholder {
     width: 100%; height: 100%;
@@ -512,6 +513,7 @@ function FoodCard({ item, onClick, index }) {
 function FoodModal({ item, onClose, onOrder }) {
   const [open,    setOpen]    = useState(false);
   const [loading, setLoading] = useState(true);
+  const [mediaError, setMediaError] = useState(false);
   const overlayRef = useRef(null);
   const videoRef   = useRef(null);
 
@@ -520,8 +522,11 @@ function FoodModal({ item, onClose, onOrder }) {
       document.body.style.overflow = 'hidden';
       requestAnimationFrame(() => setOpen(true));
       setLoading(true);
-      const t = setTimeout(() => setLoading(false), 1200);
-      return () => clearTimeout(t);
+      setMediaError(false);
+      if (!item.video && !item.modalImage) {
+        const t = setTimeout(() => setLoading(false), 250);
+        return () => clearTimeout(t);
+      }
     } else {
       document.body.style.overflow = '';
       setOpen(false);
@@ -537,6 +542,7 @@ function FoodModal({ item, onClose, onOrder }) {
   if (!item) return null;
 
   const hasVideo = !!item.video;
+  const hasModalImage = !!item.modalImage && !mediaError;
   const sub = [item.origin, item.category].filter(Boolean).join(' · ');
   const det = item.details || {};
 
@@ -555,15 +561,24 @@ function FoodModal({ item, onClose, onOrder }) {
               ref: videoRef,
               src: item.video,
               autoPlay: true, loop: true, muted: true, playsInline: true,
-              onCanPlay: () => setLoading(false)
+              onCanPlay: () => setLoading(false),
+              onError: () => { setMediaError(true); setLoading(false); }
             })
-          : h('div', { className: 'media-placeholder' },
-              h('div', { className: 'placeholder-emoji' }, item.emoji || '🍽️'),
-              h('div', { className: 'placeholder-info' },
-                h('div', { className: 'placeholder-name' }, item.name),
-                sub && h('div', { className: 'placeholder-sub' }, sub)
-              )
-            ),
+          : hasModalImage
+            ? h('img', {
+                className: 'modal-image',
+                src: item.modalImage,
+                alt: item.name,
+                onLoad: () => setLoading(false),
+                onError: () => { setMediaError(true); setLoading(false); }
+              })
+            : h('div', { className: 'media-placeholder' },
+                h('div', { className: 'placeholder-emoji' }, item.emoji || '🍽️'),
+                h('div', { className: 'placeholder-info' },
+                  h('div', { className: 'placeholder-name' }, item.name),
+                  sub && h('div', { className: 'placeholder-sub' }, sub)
+                )
+              ),
         loading && h('div', { className: 'media-loading' },
           h('div', { className: 'loading-ring' })
         ),
