@@ -15,22 +15,24 @@ const RESTAURANT_CONFIG = {
   name: "Nanny's Eatery",
   tagline: "Jamaican Restaurant & Rum Bar · Kingston to Kingsland",
   footerNote:
-    "492 New North Road, Kingsland, Auckland 1021 · +64 9 282 1632\nCuisine: Caribbean · Jamaican · Comfort Food",
+    "492 New North Road, Kingsland, Auckland 1021\nOpen for dine-in, takeaway & delivery · +64 9 282 1632",
 
   theme: {
-    colorBg: "#080905",
-    colorSurface: "#10140d",
-    colorSurface2: "#1a2215",
-    colorSurface3: "#26301f",
-    colorBorder: "#2f3b28",
+    colorBg: "#0b100b",
+    colorSurface: "#141b14",
+    colorSurface2: "#1e2720",
+    colorSurface3: "#28342a",
+    colorBorder: "#3a483b",
 
-    colorAccent: "#f2d10a",
-    colorAccentLight: "#ffe365",
-    colorAccentDim: "#a5922c",
+    colorAccent: "#ffd21f",
+    colorAccentLight: "#ffe783",
+    colorAccentDim: "#baa21d",
 
-    colorText: "#f2f4e9",
-    colorTextMuted: "#b7c0a4",
-    colorTextDim: "#6b745d",
+    colorText: "#f5f7ef",
+    colorTextMuted: "#c9d2bb",
+    colorTextDim: "#89957f",
+    
+    menu1-nannys-eatery
 
     fontDisplay: "Playfair Display",
     fontBody: "Montserrat",
