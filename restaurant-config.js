@@ -31,6 +31,7 @@ const RESTAURANT_CONFIG = {
     colorText: "#f5f7ef",
     colorTextMuted: "#c9d2bb",
     colorTextDim: "#89957f",
+    menu1-nannys-eatery
 
     fontDisplay: "Playfair Display",
     fontBody: "Montserrat",
