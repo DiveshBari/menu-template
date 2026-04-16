@@ -72,8 +72,8 @@
     text-transform: uppercase;
   }
   .restaurant-tagline {
-    font-size: 9px;
-    letter-spacing: 0.4em;
+    font-size: 10.5px;
+    letter-spacing: 0.28em;
     color: var(--text-muted);
     text-transform: uppercase;
     margin-top: 6px;
@@ -109,7 +109,7 @@
     font-weight: 500;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: var(--text-dim);
+    color: var(--text-muted);
     background: none;
     border: none;
     border-bottom: 2px solid transparent;
@@ -241,7 +241,7 @@
     margin-bottom: 4px; letter-spacing: 0.01em;
   }
   .card-desc {
-    font-size: 10.5px; color: var(--text-muted);
+    font-size: 11px; color: color-mix(in srgb, var(--text) 78%, var(--text-muted));
     line-height: 1.5; letter-spacing: 0.02em; font-weight: 300;
   }
   .card-bottom {
@@ -253,7 +253,7 @@
     font-size: 1.2rem; font-weight: 500;
     color: var(--accent); letter-spacing: 0.04em;
   }
-  .card-cta { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-dim); }
+  .card-cta { font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); }
 
   /* ── MODAL ── */
   .modal-overlay {
@@ -399,22 +399,8 @@
 
   /* ── FOOTER ── */
   .menu-footer { text-align: center; padding: 3rem 1.5rem 2rem; border-top: 1px solid var(--border); }
-  .footer-text { font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--text-dim); line-height: 2; white-space: pre-line; }
+  .footer-text { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); line-height: 1.7; white-space: pre-line; }
 
-  /* ── TOAST ── */
-  .toast {
-    position: fixed; bottom: 2rem; left: 50%;
-    transform: translateX(-50%) translateY(80px);
-    background: var(--surface3);
-    border: 1px solid var(--accent-dim);
-    color: var(--accent);
-    font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
-    padding: 12px 24px; border-radius: 2px;
-    z-index: 2000; opacity: 0;
-    transition: transform 0.35s var(--ease), opacity 0.35s;
-    font-weight: 400; white-space: nowrap;
-  }
-  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 </style>
 </head>
 <body>
@@ -510,7 +496,7 @@ function FoodCard({ item, onClick, index }) {
 }
 
 // ── FoodModal ─────────────────────────────────────────────────────
-function FoodModal({ item, onClose, onOrder }) {
+function FoodModal({ item, onClose }) {
   const [open,    setOpen]    = useState(false);
   const [loading, setLoading] = useState(true);
   const [mediaError, setMediaError] = useState(false);
@@ -624,8 +610,8 @@ function FoodModal({ item, onClose, onOrder }) {
         h('div', { className: 'modal-divider' }),
         h('button', {
           className: 'modal-order-btn',
-          onClick: () => { onOrder(item); close(); }
-        }, 'Add to Order')
+          onClick: close
+        }, 'Return to Menu')
       )
     )
   );
@@ -636,14 +622,6 @@ function App() {
   const cfg = RESTAURANT_CONFIG;
   const [activeTab,     setActiveTab]     = useState(CATEGORIES[0]);
   const [selectedItem,  setSelectedItem]  = useState(null);
-  const [toastMsg,      setToastMsg]      = useState('');
-  const [toastVisible,  setToastVisible]  = useState(false);
-
-  const showToast = msg => {
-    setToastMsg(msg);
-    setToastVisible(true);
-    setTimeout(() => setToastVisible(false), 2800);
-  };
 
   const icons = cfg.theme.tabIcons || [];
   const items = ALL_ITEMS[activeTab] || [];
@@ -701,15 +679,8 @@ function App() {
     // MODAL
     h(FoodModal, {
       item: selectedItem,
-      onClose: () => setSelectedItem(null),
-      onOrder: item => showToast(`${item.name} added to order`)
-    }),
-
-    // TOAST
-    h('div', {
-      className: `toast${toastVisible ? ' show' : ''}`,
-      role: 'status', 'aria-live': 'polite'
-    }, toastMsg)
+      onClose: () => setSelectedItem(null)
+    })
   );
 }
 
